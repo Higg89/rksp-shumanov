@@ -8,7 +8,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,15 +17,15 @@ public class JacksonConfig {
 
     @Bean
     @Primary
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
+    public ObjectMapper objectMapper() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
 
-        return builder
-                .modules(javaTimeModule)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .build();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(javaTimeModule);
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
     }
 }

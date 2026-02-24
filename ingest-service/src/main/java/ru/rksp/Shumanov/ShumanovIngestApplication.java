@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ShumanovApplication {
+public class ShumanovIngestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ShumanovApplication.class, args);
+		SpringApplication.run(ShumanovIngestApplication.class, args);
 	}
 
 }
